@@ -12,6 +12,7 @@ import re
 API_KEY="..."
 WEATHER_INTERVAL=3
 WEATHER_STATION="..."
+DISPLAY_CYCLE_SECONDS=5
 
 lcd = Adafruit_CharLCD()
 lcd.begin(16,2)
@@ -90,7 +91,7 @@ try:
         lcd.setCursor(10,0)
         lcd.message(str(tempdiff))
         lcd.setCursor(0,1)
-        if int(datetime.now().strftime("%S"))%5 == 0:
+        if int(datetime.now().strftime("%S"))%DISPLAY_CYCLE_SECONDS == 0:
             i+=1
         lcd.message(current["temps"]+"  "+current["weather_list"][i%len(current["weather_list"])])
         sleep(1)

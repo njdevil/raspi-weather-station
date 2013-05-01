@@ -45,8 +45,10 @@ def historical(actual,diff):
 def minmaxtemp(actual,current):
     if (datetime.now()-current["mintime"]).days>0:
         current["mintime"]=datetime.now()
+        current["mintemp"]=200
     if (datetime.now()-current["maxtime"]).days>0:
         current["maxtime"]=datetime.now()
+        current["maxtemp"]=-200
     if actual<current["mintemp"]:
         current["mintemp"]=actual
         current["mintime"]=datetime.now()

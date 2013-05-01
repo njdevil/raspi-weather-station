@@ -42,11 +42,26 @@ def historical(actual,diff):
         diff['d5']=str(diff['d5'])+"/h"
     return diff
 
+def minmaxtemp(actual,current):
+    if (datetime.now()-current["mintime"]).days>0:
+        current["mintime"]=datetime.now()
+    if (datetime.now()-current["maxtime"]).days>0:
+        current["maxtime"]=datetime.now()
+    if actual<current["mintemp"]:
+        current["mintemp"]=actual
+        current["mintime"]=datetime.now()
+    if actual>current["maxtemp"]:
+        current["maxtemp"]=actual
+        current["maxtime"]=datetime.now()
+    return current["mintemp"],current["mintime"],current["maxtemp"],current["maxtime"]
+
 def get_weather(current):
     r=requests.get("http://api.wunderground.com/api/"+API_KEY+"/conditions/alerts/q/pws:"+WEATHER_STATION+".json")
     actualtemp=float(r.json()["current_observation"]["temp_f"])
 
     current["tempdiff"]=historical(actualtemp,current["tempdiff"])
+    current["mintemp"],current["mintime"],current["maxtemp"],current["maxtime"]=minmaxtemp(actualtemp,current)
+
     feel=float(r.json()["current_observation"]["feelslike_f"])
     if feel<actualtemp-1 or feel>actualtemp+1:
         current["temps"]=str(int(actualtemp))+"/"+str(int(feel))
@@ -65,7 +80,10 @@ def get_weather(current):
 
     rain='rn: '+r.json()["current_observation"]["precip_1hr_in"]+'"'
 
-    current["weather_list"]=[weather,wind,humidity,UV,rain]
+    mintemp="Min: "+str(current["mintemp"])
+    maxtemp="Max: "+str(current["maxtemp"])
+
+    current["weather_list"]=[weather,wind,humidity,UV,rain,mintemp,maxtemp]
 
     return current
 
@@ -79,6 +97,9 @@ try:
     current["tempdiff"]["d3"]=0
     current["tempdiff"]["d4"]=0
     current["tempdiff"]["d5"]=0
+    current["mintemp"]=200  #impossibly high temp
+    current["maxtemp"]=-200  #impossibly low temp
+    current["mintime"]=current["maxtime"]=datetime(2000,1,1,12,0,0)  #old time
     current["weather_list"]=['wait']
     i=0
 

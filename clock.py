@@ -1,6 +1,11 @@
-#RasPi Weather Station v2
-
 #!/usr/bin/python
+
+#############
+# RasPi Weather Station v2
+# copyright 2013, Modular Programming Systems Inc
+# released as GPL3
+#
+#############
 
 from Adafruit_CharLCD import Adafruit_CharLCD
 from time import sleep, strftime

@@ -25,3 +25,8 @@ Historical data is stored for 5 cycles of the retrieval time and the change in t
 Outstanding Task
 ========
 Need to use the Adafruit library to display a custom character instead of the current "/h" after the Temperature Change.  A nice 1/4 graphic smooshed into 1 cell would be great!
+
+
+GPL
+---------
+This code is released as GPL3 and is copyright 2013 by Modular Programming Systems Inc.
